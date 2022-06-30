@@ -16,7 +16,6 @@
 
 package org.vividus.selenium.mobileapp;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -125,11 +124,23 @@ public class MobileAppWebDriverManager extends GenericWebDriverManager
 
     private float calculateDpr()
     {
+        if (isAndroidNativeApp())
+        {
+            String deviceScreenSize = (String) getCapabilities().getCapability("deviceScreenSize");
+            float screenHeight = Float.parseFloat(deviceScreenSize.split("x")[1]);
+            return calculateDpr(screenHeight);
+        }
+
+        return calculateDpr(getSize().getHeight());
+    }
+
+    private float calculateDpr(float screenHeight)
+    {
         byte[] imageBytes = getUnwrappedDriver(TakesScreenshot.class).getScreenshotAs(OutputType.BYTES);
         try (InputStream is = new ByteArrayInputStream(imageBytes))
         {
-            BufferedImage image = ImageIO.read(is);
-            return image.getHeight() / (float) getSize().getHeight();
+            int imageHeight = ImageIO.read(is).getHeight();
+            return imageHeight / screenHeight;
         }
         catch (IOException e)
         {
