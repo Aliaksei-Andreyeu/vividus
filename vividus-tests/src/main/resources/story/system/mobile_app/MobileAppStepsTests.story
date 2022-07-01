@@ -366,5 +366,12 @@ When I activate application with bundle identifier `${main-app}`
 When I wait until element located `accessibilityId(menuToggler)` appears
 
 
+Scenario: Verify step: 'When I run app in background for duration `$duration`'
+When I send app to background
+When I wait until element located `accessibilityId(menuToggler)` disappears
+When I activate application with bundle identifier `${main-app}`
+When I wait until element located `accessibilityId(menuToggler)` appears
+
+
 Scenario: Verify step: 'When I close mobile application'
 When I close mobile application

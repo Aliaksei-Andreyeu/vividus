@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2021 the original author or authors.
+ * Copyright 2019-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ import org.vividus.selenium.manager.WebDriverManagerParameter;
 import org.vividus.util.property.PropertyParser;
 
 import io.appium.java_client.ExecutesMethod;
+import io.appium.java_client.InteractsWithApps;
 import io.appium.java_client.internal.CapabilityHelpers;
 
 public class ApplicationSteps
@@ -155,5 +156,14 @@ public class ApplicationSteps
                                   .toArray();
 
         execute(executesMethod, entry("setSettings", prepareArguments("settings", prepareArguments(params, values))));
+    }
+
+    /**
+     * Sends the currently running application to the background
+     */
+    @When("I send app to background")
+    public void sendToBackground()
+    {
+        webDriverProvider.getUnwrapped(InteractsWithApps.class).runAppInBackground(null);
     }
 }
